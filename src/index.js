@@ -88,7 +88,7 @@ async function sendmydata(env, d) {
 		},
 		{
 			name: "test.orp",
-			interval: 1,
+			interval: 60,
 			value: d.orp,
 			time: d.ts,
 		},
