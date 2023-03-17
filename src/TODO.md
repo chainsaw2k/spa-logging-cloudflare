@@ -1,5 +1,7 @@
-- need to commit to GH
-- need to deploy from GHA so that i can keep the secrets in GH rather than publish as plain text in CF. or maybe put secrets in wrangler.toml, and just not commit it 
-- need to build proper dashboards in grafana
-- need to continue to test, figure out why some grafana entries are dropped
-- i want to see log entries coming through
+- need to deploy from GHA so that i can keep the secrets in GH rather than publish as plain text in CF. or maybe put secrets in wrangler.toml, and just not commit it.
+- need to build proper dashboards in grafana.
+- need to continue to test, figure out why some grafana entries are dropped... if that's still the case.
+- have grafana page me when there is
+  - no data
+  - ph out of range
+  - connected is 0
