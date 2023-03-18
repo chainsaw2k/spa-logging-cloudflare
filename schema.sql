@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS ph_data;
+CREATE TABLE ph_data (ts INT, ph REAL, PRIMARY KEY (`ts`));
+INSERT INTO ph_data (ts, ph) VALUES (1679095160, 7.3), (1679095168, 7.34);
