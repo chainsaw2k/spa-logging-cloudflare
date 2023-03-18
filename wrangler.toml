@@ -1,0 +1,8 @@
+name = "spa-logging"
+main = "src/index.js"
+compatibility_date = "2023-03-12"
+
+[[ d1_databases ]]
+binding = "D1_PH_LOG_BINDING"
+database_name = "ph_log"
+database_id = "b648be76-ff8d-41ef-9518-0ffe19cf9166"

@@ -5,3 +5,8 @@
   - no data
   - ph out of range
   - connected is 0
+
+
+  wrangler d1 execute ph_log --local --file=./src/schema.sql
+
+  wrangler d1 execute ph_log --local --command='SELECT * FROM ph_data'

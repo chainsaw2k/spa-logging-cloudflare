@@ -10,6 +10,7 @@ export default {
 			const d = Math.floor(Date.now() / 1000);
 			const ob = { ts: d, connected: data.connected, temp: data.temperatureF, spaboy_connected: data.spaboy_connected, ph: data.ph, ph_status: data.ph_status, orp: data.orp, orp_status: data.orp_status, };
 			await sendmydata(env, ob);
+			await write_d1(env, d, data.ph);
 			return JSON.stringify(ob);
 		}).catch((r) => 'error')
 		return new Response(r)
@@ -21,6 +22,7 @@ export default {
 			const d = Math.floor(Date.now() / 1000);
 			const ob = { ts: d, connected: data.connected, temp: data.temperatureF, spaboy_connected: data.spaboy_connected, ph: data.ph, ph_status: data.ph_status, orp: data.orp, orp_status: data.orp_status, };
 			await sendmydata(env, ob);
+			await write_d1(env, d, data.ph)
 			return JSON.stringify(ob);
 		}).catch((r) => 'error'))
 	},
@@ -76,13 +78,13 @@ async function sendmydata(env, d) {
 	const body = [
 		{
 			name: "test.ph",
-			interval: 1,
+			interval: 60,
 			value: d.ph,
 			time: d.ts,
 		},
 		{
 			name: "test.temp",
-			interval: 1,
+			interval: 60,
 			value: d.temp,
 			time: d.ts,
 		},
@@ -94,7 +96,7 @@ async function sendmydata(env, d) {
 		},
 		{
 			name: "test.connected",
-			interval: 1,
+			interval: 60,
 			value: d.connected ? 1 : 0,
 			time: d.ts,
 		},
@@ -133,4 +135,18 @@ async function sendmydata(env, d) {
 	const results = await gatherResponse(response);
 	console.log('grafana results ', results)
 	return new Response(results, init);
+};
+
+async function write_d1(env, ts, ph) {
+	try {
+		console.log(ts, ph)
+		await env.D1_PH_LOG_BINDING.prepare(
+			"INSERT INTO ph_data (ts, ph) VALUES ( ?, ? );"
+		)
+			.bind(ts, ph)
+			.run();
+			console.log('DB WRITE SUCCESS')
+	} catch (e) {
+		console.log('db write error', e)
+	}
 };
