@@ -109,13 +109,13 @@ async function sendmydata(env, d) {
 		{
 			name: "test.filter_status",
 			interval: 60,
-			value: d.filter_status = "Idle" ? 0 : 1,
+			value: d.filter_status == "Idle" ? 0 : 1,
 			time: d.ts,
 		},
 		{
 			name: "test.pump1",
 			interval: 60,
-			value: d.pump1 = "off" ? 0 : 1,
+			value: d.pump1 == "off" ? 0 : 1,
 			time: d.ts,
 		},
 
