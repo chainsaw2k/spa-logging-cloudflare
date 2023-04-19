@@ -20,7 +20,7 @@ export default {
 	async scheduled(event, env, ctx) {
 		ctx.waitUntil(domyfetch(env).then((res) => res.json()).then(async (data) => {
 			const d = Math.floor(Date.now() / 1000);
-			const ob = { ts: d, connected: data.connected, temp: data.temperatureF, spaboy_connected: data.spaboy_connected, ph: data.ph, ph_status: data.ph_status, orp: data.orp, orp_status: data.orp_status, };
+			const ob = { ts: d, connected: data.connected, temp: data.temperatureF, spaboy_connected: data.spaboy_connected, spaboy_producing: data.spaboy_producing, pump1: data.pump1, filter_status: data.filter_status, ph: data.ph, ph_status: data.ph_status, orp: data.orp, orp_status: data.orp_status, };
 			await sendmydata(env, ob);
 			await write_d1(env, d, data.ph)
 			return JSON.stringify(ob);
@@ -100,6 +100,24 @@ async function sendmydata(env, d) {
 			value: d.connected ? 1 : 0,
 			time: d.ts,
 		},
+		{
+			name: "test.spaboy_producing",
+			interval: 60,
+			value: d.spaboy_producing ? 1 : 0,
+			time: d.ts,
+		},
+		{
+			name: "test.filter_status",
+			interval: 60,
+			value: d.filter_status = "Idle" ? 0 : 1,
+			time: d.ts,
+		},
+		{
+			name: "test.pump1",
+			interval: 60,
+			value: d.pump1 = "off" ? 0 : 1,
+			time: d.ts,
+		},
 
 	];
 
@@ -141,7 +159,7 @@ async function write_d1(env, ts, ph) {
 	try {
 		console.log(ts, ph)
 		await env.D1_PH_LOG_BINDING.prepare(
-			"INSERT INTO ph_data (ts, ph) VALUES ( ?, ? );"
+			"INSERT INTO ph_data (ts, ph, spaboy_producing) VALUES ( ?, ? );"
 		)
 			.bind(ts, ph)
 			.run();
